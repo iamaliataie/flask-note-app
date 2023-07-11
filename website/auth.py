@@ -9,18 +9,24 @@ auth = Blueprint("auth", __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('views.home'))
     if request.method == 'POST':
         form = request.form
         user = User.query.filter_by(email=form['email']).first()
         if user:
             equal_password = check_password_hash(user.password, form['password'])
-            if equal_password: print('user found')
-            else: print('wrong password')
-        else: print('user not found')
-    return render_template('login.html')
+            if equal_password:
+                login_user(user)
+                return redirect(url_for('views.home'))
+            else: flash('Wrong password')
+        else: flash('User not found')
+    return render_template('login.html', user=current_user)
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('views.home'))
     if request.method == 'POST':
         form = request.form
 
@@ -29,7 +35,14 @@ def signup():
             new_user = User(email=form['email'], first_name=form['name'], password=generate_password_hash(form['password'], method='sha256'))
             db.session.add(new_user)
             db.session.commit()
+            flash('User registered successfully. please log in')
         else:
-            print('user already registered with this email')
+            flash('A user already registered with this email')
         
-    return render_template('signup.html')
+    return render_template('signup.html', user=current_user)
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('auth.login'))
