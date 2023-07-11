@@ -7,7 +7,7 @@
         {% for note in notes %}
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 {{ note.body }}
-                <button type="button" onclick="deleteNote({{note.id}})" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" onclick="deleteNote('{{note.id}}')" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}
     </div>
