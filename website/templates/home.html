@@ -1,5 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>homepage</h1>
+    <div class="p-2">
+        <h1>welcome, {{ current_user.first_name }}</h1>
+        <h3 class="mb-2">Notes</h3>
+        {% for note in notes %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ note.body }}
+                <button type="button" onclick="deleteNote({{note.id}})" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+        function deleteNote(noteId) {
+            fetch(`/delete-note/${noteId}`)
+            .then(res => {
+                window.history.pushState({},{},"/")
+            })
+            .catch()
+        }
+    </script>
 {% endblock content %}

@@ -21,6 +21,9 @@
                   <a class="nav-link" aria-current="page" href="#">Home</a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('views.new_note') }}">Create Note</a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
                 </li>
                 {% else %}
