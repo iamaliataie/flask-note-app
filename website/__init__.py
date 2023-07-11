@@ -2,7 +2,7 @@ from os import path
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
 DB_NAME = 'database.db'
@@ -12,6 +12,8 @@ def create_app():
     app.config['SECRET_KEY'] = 'anythingispossible'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
+
+    migrate = Migrate(app, db)
 
     from .views import views
     from .auth import auth

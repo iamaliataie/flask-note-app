@@ -21,7 +21,7 @@ def login():
                 return redirect(url_for('views.home'))
             else: flash('Wrong password')
         else: flash('User not found')
-    return render_template('login.html', user=current_user)
+    return render_template('login.html')
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -39,7 +39,7 @@ def signup():
         else:
             flash('A user already registered with this email')
         
-    return render_template('signup.html', user=current_user)
+    return render_template('signup.html')
 
 @auth.route('/logout')
 @login_required
